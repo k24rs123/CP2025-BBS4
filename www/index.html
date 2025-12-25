@@ -51,20 +51,24 @@ function getAuthErrorMessage(error) {
 }
 
 // 文字数カウントの更新
-function updateCharacterCount(inputId, counterId, maxLength) {
+function updateRemainingCount(inputId, counterId, maxLength) {
     const input = $(`#${inputId}`);
     const counter = $(`#${counterId}`);
 
-    input.on('input', () => {
+    function update() {
         const length = input.val().length;
-        counter.text(`${length}/${maxLength}`);
+        const remain = maxLength - length;
+        counter.text(`残り ${remain} 文字`);
 
-        if (length > maxLength) {
+        if (remain < 0) {
             counter.addClass('error');
         } else {
             counter.removeClass('error');
         }
-    });
+    }
+
+    input.on('input', update);
+    update();
 }
 
 // 投稿内容のバリデーション
@@ -121,7 +125,7 @@ function createPost(author, content) {
     .then(() => {
         showMessage('投稿が完了しました！');
         $('#contentInput').val('');
-        updateCharacterCount('contentInput', 'contentCount', 1000);
+        updateRemainingCount('contentInput', 'contentCount', 1000);
     })
     .catch((error) => {
         showMessage('投稿に失敗しました：' + error.message, 'error');
@@ -337,7 +341,7 @@ function startEdit(postId) {
     const content = post.find('.post-content').text();
 
     $('#editContent').val(content);
-    updateCharacterCount('editContent', 'editContentCount', 1000);
+    updateRemainingCount('editContent', 'editContentCount', 1000);
     showModal('editModal');
 }
 
@@ -475,7 +479,7 @@ $(function() {
      });
 
     // 文字数カウンターの初期化
-    updateCharacterCount('contentInput', 'contentCount', 1000);
+    updateRemainingCount('contentInput', 'contentCount', 1000);
 
     // 投稿処理
     $('#postButton').on('click', () => {
