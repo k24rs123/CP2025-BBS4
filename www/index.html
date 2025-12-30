@@ -147,7 +147,7 @@ function escapeHtml(str) {
 }
 
 // タイムスタンプのフォーマット
-function formatTimestamp(timestamp) {
+function formatRelativeTime(timestamp) {
     const now = Date.now();
     const diff = now - timestamp;
     
@@ -224,11 +224,11 @@ function createPostElement(post) {
             </div>
             <div class="post-footer">
                 <span class="post-time">
-                    ${formatTimestamp(post.timestamp)}
+                    ${formatRelativeTime(post.timestamp)}
                 </span>
                 ${post.updatedAt ? `
                     <span class="post-updated">
-                        (編集済み: ${formatTimestamp(post.updatedAt)})
+                        (編集済み: ${formatRelativeTime(post.updatedAt)})
                     </span>
                 ` : ''}
             </div>
@@ -240,6 +240,8 @@ function createPostElement(post) {
 function renderPosts(posts) {
     const postsDiv = $('#postsList');
     postsDiv.empty();
+    
+    $('#postCount').text(`投稿数：${posts.length}件`);
 
     if (posts.length === 0) {
         postsDiv.html('<p class="no-posts">投稿はありません</p>');
@@ -606,6 +608,7 @@ window.addEventListener('unload', () => {
         <!-- 投稿一覧 -->
         <div class="posts-container">
             <h2>投稿一覧</h2>
+            <p id="postCount">投稿数：0件</p>
             <div class="posts-control">
                 <select id="sortOrder" class="form-control">
                     <option value="newest">新しい順</option>
