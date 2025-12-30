@@ -148,14 +148,35 @@ function escapeHtml(str) {
 
 // タイムスタンプのフォーマット
 function formatTimestamp(timestamp) {
-    const date = new Date(timestamp);
-    return date.toLocaleString('ja-JP', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
+    const now = Date.now();
+    const diff = now - timestamp;
+    
+    const minute = 1000 * 60;
+    const hour = minute * 60;
+    const day  = hour * 24;
+    const week = day * 7;
+    const month = day * 30;
+
+   if (diff < hour) {
+        const m = Math.floor(diff / minute);
+        return m <= 1 ? '1分前' : `${m}分前`;
+    } 
+    else if (diff < day) {
+        const h = Math.floor(diff / hour);
+        return h <= 1 ? '1時間前' : `${h}時間前`;
+    } 
+    else if (diff < week) {
+        const d = Math.floor(diff / day);
+        return d <= 1 ? '1日前' : `${d}日前`;
+    } 
+    else if (diff < month) {
+        const w = Math.floor(diff / week);
+        return w <= 1 ? '1週間前' : `${w}週間前`;
+    } 
+    else {
+        const mo = Math.floor(diff / month);
+        return mo <= 1 ? '1ヶ月前' : `${mo}ヶ月前`;
+    }
 }
 
 // 投稿の編集権限チェック
