@@ -529,6 +529,19 @@ $(function() {
 
     // 投稿一覧の初期読み込み
     loadPosts();
+
+    $('#themeToggle').on('click', () => {
+        $('body').toggleClass('dark');
+
+    const isDark = $('body').hasClass('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark') {
+        $('body').addClass('dark');
+    }
+
 });
 
 // クリーンアップ処理
@@ -570,6 +583,9 @@ window.addEventListener('unload', () => {
         <div class="user-info logged-in">
             <span>ログイン中：<span id="userEmail"></span></span>
             <button id="logoutButton" class="btn-secondary">ログアウト</button>
+
+            <button id = "themeToggle" class = "btn-secondary">
+            </button>
         </div>
 
         <!-- 投稿フォーム（ログイン時表示） -->
