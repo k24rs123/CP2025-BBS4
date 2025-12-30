@@ -201,8 +201,10 @@ function createPostElement(post) {
         </div>
     ` : '';
 
+    const isMine = currentUser && post.userId === currentUser.uid;
+
     return `
-        <div class="post" id="post-${post.id}">
+        <div class="post ${isMine ? 'my-post' : ''}" id="post-${post.id}">
             <div class="post-header">
                 <span class="post-author">${escapeHtml(post.author)}</span>
                 <!-- 編集権限があれば、編集・削除機能を表示 -->

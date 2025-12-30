@@ -512,3 +512,8 @@ body.dark {
     background-color: #121212;
     color: #ffffff;
 }
+
+.my-post {
+    background-color: #e6f3ff;
+    border-left: 5px solid #3399ff;
+}
